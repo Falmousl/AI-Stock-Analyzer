@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="dashboard-container">
+    <!-- Form Section -->
+    <div class="form-section">
+        <h2>Stock Master</h2>
+        <form action="/" method="POST">
+            <label for="stock">Enter:</label>
+            <input type="text" name="stock" id="stock" placeholder="e.g., AAPL">
+            <input type="submit" value="Analyze">
+        </form>
+    </div>
+
+    <!-- Company Description Section -->
+    <div class="company-description-section">
+        <h2>Company Description</h2>
+        {% if sentiment and sentiment["Company Description"] %}
+            <p>{{ sentiment["Company Description"] }}</p>
+        {% else %}
+            <p>No data available.</p>
+        {% endif %}
+    </div>
+
+    <!-- Graph Section -->
+    <div class="graph-section">
+        {% if stock_data %}
+            <img src="{{ stock_data }}" alt="Stock Graph">
+        {% else %}
+            <div class="placeholder">
+                <p>Graph will appear here after analysis.</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Current Stock Trends Section -->
+    <div class="current-trends-section">
+        <h2>Current Stock Trends</h2>
+        {% if sentiment and sentiment["Current Stock Trends"] %}
+            <p>
+                <strong>Latest Closing Price:</strong> {{ sentiment["Current Stock Trends"]["Latest Closing Price"] }}<br>
+                <strong>Trend:</strong> {{ sentiment["Current Stock Trends"]["Trend"] }}
+            </p>
+        {% else %}
+            <p>No data available.</p>
+        {% endif %}
+    </div>
+
+    <!-- Key Factors Section -->
+    <div class="key-factors-section">
+        <h2>Key Factors Influencing Stock Price</h2>
+        {% if sentiment and sentiment["Key Factors Influencing Stock Price"] %}
+            <ul>
+                {% for factor in sentiment["Key Factors Influencing Stock Price"] %}
+                <li>{{ factor }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No data available.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
